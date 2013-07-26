@@ -10,9 +10,6 @@ public class StatusActivity extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-
-
-        // coascha
+        setContentView(R.layout.status);
     }
 }
