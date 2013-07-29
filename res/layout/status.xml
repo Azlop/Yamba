@@ -3,26 +3,36 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    >
+        android:background="@drawable/background">
+
     <!-- Title TextView -->
     <TextView
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:textSize="30sp"
-    android:layout_margin="10dp"
-    android:text="@string/titleStatus"
-    />
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:layout_margin="10dp"
+        android:text="@string/titleStatus"
+        android:textColor="@android:color/white" />
 
-    <!-- Status EditButton -->
+    <!-- Text Counter TextView -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:id="@+id/textCount"
+        android:text="000"
+        android:layout_marginRight="10dp" />
+
+    <!-- Status EditText -->
     <EditText
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_weight="1"
-    android:hint="@string/hintText"
-    android:id="@+id/editText"
-    android:gravity="top|center_horizontal"
-    />
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:hint="@string/hintText"
+        android:id="@+id/editText"
+        android:gravity="top|center_horizontal"
+        android:background="#cfff" />
 
     <!-- Update Button -->
     <Button
@@ -30,7 +40,7 @@
         android:layout_height="wrap_content"
         android:text="@string/buttonUpdate"
         android:textSize="20sp"
-        android:id="@+id/buttonUpdate"
-        />
+        android:id="@+id/buttonUpdate" />
+
 </LinearLayout>
 
