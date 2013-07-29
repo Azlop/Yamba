@@ -2,9 +2,11 @@ package com.marakana.Yamba;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -20,13 +22,13 @@ import android.widget.Toast;
 import winterwell.jtwitter.Twitter;
 import winterwell.jtwitter.TwitterException;
 
-public class StatusActivity extends Activity implements OnClickListener, TextWatcher
-{
+public class StatusActivity extends Activity implements OnClickListener, TextWatcher, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = "StatusActivity";
     EditText editText;
     Button updateButton;
     Twitter twitter;
     TextView textCount;
+    SharedPreferences prefs;
 
     /** Called when the activity is first created. */
     @Override
@@ -46,6 +48,10 @@ public class StatusActivity extends Activity implements OnClickListener, TextWat
 
         twitter = new Twitter("student","password");
         twitter.setAPIRootUrl("http://yamba.marakana.com/api");
+
+        // Setup Preferences
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -67,6 +73,12 @@ public class StatusActivity extends Activity implements OnClickListener, TextWat
         if(count < 0){
             textCount.setTextColor(Color.RED);
         }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        // invalidate twitter object
+        twitter = null;
     }
 
     // Asynchronously posts to Twitter
@@ -100,9 +112,13 @@ public class StatusActivity extends Activity implements OnClickListener, TextWat
 
     @Override
     public void onClick(View v) {
-        String status = editText.getText().toString();
-        new PostToTwitter().execute(status);
-        Log.d(TAG, "onClicked");
+        // Update twitter status
+        try{
+            getTwitter().setStatus(editText.getText().toString());
+        }
+        catch (TwitterException e){
+            Log.d(TAG, "Twitter setStatus failed: "+e);
+        }
     }
 
     // When a options item is clicked
@@ -121,5 +137,19 @@ public class StatusActivity extends Activity implements OnClickListener, TextWat
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
+    }
+
+    private Twitter getTwitter(){
+        if(twitter == null){
+            String username,password,apiRoot;
+            username = prefs.getString("username", "");
+            password = prefs.getString("password", "");
+            apiRoot = prefs.getString("apiRoot", "http://yamba.marakana.com/api");
+
+            // Connect to twitter.com
+            twitter = new Twitter(username, password);
+            twitter.setAPIRootUrl(apiRoot);
+        }
+        return twitter;
     }
 }
