@@ -12,4 +12,6 @@
     <string name="summaryUsername">Username</string>
     <string name="summaryPassword">Password</string>
     <string name="summaryApiRoot">URL of Root API for your service</string>
+    <string name="titleServiceStart">Start</string>
+    <string name="titleServiceStop">Stop</string>
 </resources>

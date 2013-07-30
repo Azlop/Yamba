@@ -87,7 +87,9 @@ public class StatusActivity extends Activity implements OnClickListener, TextWat
         @Override
         protected String doInBackground(String... params) {
             try{
-                winterwell.jtwitter.Status status = twitter.updateStatus(params[0]);
+                // Use getTwitter method from YambaApplication.java
+                YambaApplication yamba = (YambaApplication) getApplication();
+                winterwell.jtwitter.Status status = yamba.getTwitter().updateStatus(params[0]);
                 return status.text;
             } catch (TwitterException e){
                 Log.e(TAG, e.toString());
@@ -125,9 +127,15 @@ public class StatusActivity extends Activity implements OnClickListener, TextWat
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case R.id.itemServiceStart:
+                startService(new Intent(this, UpdaterService.class));
+                break;
+            case R.id.itemServiceStop:
+                stopService(new Intent(this, UpdaterService.class));
+                break;
             case R.id.itemPrefs:
                 startActivity(new Intent(this, PrefsActivity.class));
-            break;
+                break;
         }
         return true;
     }
