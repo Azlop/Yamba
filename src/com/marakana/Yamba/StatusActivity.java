@@ -89,7 +89,7 @@ public class StatusActivity extends Activity implements OnClickListener, TextWat
             try{
                 // Use getTwitter method from YambaApplication.java
                 YambaApplication yamba = (YambaApplication) getApplication();
-                winterwell.jtwitter.Status status = yamba.getTwitter().updateStatus(params[0]);
+                Twitter.Status status = yamba.getTwitter().updateStatus(params[0]);
                 return status.text;
             } catch (TwitterException e){
                 Log.e(TAG, e.toString());

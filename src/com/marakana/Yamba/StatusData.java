@@ -38,7 +38,7 @@ public class StatusData {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            Log.i(TAG, "Creating database"+DATABASE);
+            Log.i(TAG, "Creating database "+DATABASE);
             db.execSQL("create table "+TABLE+" ("+C_ID+" int primary key, "+
                 C_CREATED_AT+" int, "+C_USER+" text, "+C_TEXT+" text)");
         }
@@ -69,7 +69,6 @@ public class StatusData {
         } finally {
             db.close();
         }
-
     }
 
     // return cursor where the columns are _id, created_at, user, text

@@ -19,7 +19,7 @@ public class DbHelper extends SQLiteOpenHelper {
     static final String DB_NAME = "timeline.db";
     static final int DB_VERSION = 1;
     static final String TABLE = "timeline";
-    static final String C_ID = "BaseColumns_.ID";
+    static final String C_ID = "BaseColumns_ID";
     static final String C_CREATED_AT = "created_at";
     static final String C_SOURCE = "source";
     static final String C_TEXT = "txt";
@@ -34,8 +34,8 @@ public class DbHelper extends SQLiteOpenHelper {
     // Called only once, first time the DB is created
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE "+TABLE+" ("+C_ID+" int primary key, "
-                +C_CREATED_AT+ " int, "+C_USER+" text, "+C_TEXT+" text)";
+        String sql = "create table " + TABLE + " (" + C_ID + " int primary key, "
+                + C_CREATED_AT + " int, "+C_SOURCE+" text, " + C_USER + " text, " + C_TEXT + " text)";
         db.execSQL(sql);
         Log.d(TAG, "onCreated sql: "+sql);
     }

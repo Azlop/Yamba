@@ -24,11 +24,11 @@ public class YambaApplication extends Application implements SharedPreferences.O
     public Twitter twitter;
     private SharedPreferences prefs;
     private boolean serviceRunning;
-    private StatusData statusData;
+    //private StatusData statusData;
 
-    public StatusData getStatusData(){
-        return statusData;
-    }
+    //public StatusData getStatusData(){
+    //    return statusData;
+    //}
 
     public boolean isServiceRunning() {
         return serviceRunning;
@@ -75,23 +75,23 @@ public class YambaApplication extends Application implements SharedPreferences.O
 
     // Connects to online service and puts the latest statuses into DB.
     // Returns the count of statuses
-    public synchronized int fetchStatusUpdates(){
+    /*public synchronized int fetchStatusUpdates(){
         Log.d(TAG, "Fetching status updates");
-        Twitter twitter1 = this.getTwitter();
+        Twitter twitter = this.getTwitter();
 
-        if(twitter1 == null){
+        if(twitter == null){
             Log.d(TAG, "Twitter connection info not initialized");
             return 0;
         }
 
         try {
-            List<winterwell.jtwitter.Status> statusUpdates = twitter.getHomeTimeline();
+            List<Twitter.Status> statusUpdates = twitter.getHomeTimeline();
             long latestStatusCreatedAtTime = this.getStatusData().getLatestStatusCreatedAtTime();
             int count = 0;
             ContentValues values = new ContentValues();
 
-            for (winterwell.jtwitter.Status status : statusUpdates){
-                values.put(StatusData.C_ID, status.id.toString());
+            for (Twitter.Status status : statusUpdates){
+                values.put(StatusData.C_ID, status.id);
                 long createdAt = status.getCreatedAt().getTime();
                 values.put(StatusData.C_CREATED_AT, createdAt);
                 values.put(StatusData.C_TEXT, status.text);
@@ -111,5 +111,5 @@ public class YambaApplication extends Application implements SharedPreferences.O
             Log.e(TAG, "Failed to fetch status updates", e);
             return 0;
         }
-    }
+    }*/
 }
