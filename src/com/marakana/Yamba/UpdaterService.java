@@ -1,7 +1,9 @@
 package com.marakana.Yamba;
 
 import android.app.Service;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.util.Log;
 import winterwell.jtwitter.Twitter;
@@ -22,6 +24,8 @@ public class UpdaterService extends Service {
     private boolean runflag = false;
     private Updater updater;
     private YambaApplication yamba;
+    DbHelper dbHelper;
+    SQLiteDatabase db;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -48,6 +52,7 @@ public class UpdaterService extends Service {
         super.onCreate();
         this.yamba = (YambaApplication) getApplication();
         this.updater = new Updater();
+        dbHelper = new DbHelper(this);
         Log.d(TAG, "onCreated");
     }
 
@@ -77,10 +82,28 @@ public class UpdaterService extends Service {
                     } catch (TwitterException e){
                         Log.e(TAG, "Failed to connect to twitter service", e);
                     }
+
+                    // open database for writing
+                    db = dbHelper.getWritableDatabase();
+                    ContentValues values = new ContentValues();
+
                     // Loop over the timeline and print it out
                     for(winterwell.jtwitter.Status status : timeline){
+                        // insert into database
+                        values.clear();
+                        values.put(DbHelper.C_ID, status.id.toString());
+                        values.put(DbHelper.C_CREATED_AT, status.getCreatedAt().getTime());
+                        values.put(DbHelper.C_SOURCE, status.source);
+                        values.put(DbHelper.C_TEXT, status.text);
+                        values.put(DbHelper.C_USER, status.user.name);
+                        db.insertOrThrow(DbHelper.TABLE, null, values);
+
                         Log.d(TAG, String.format("%s: %s", status.user.name, status.text));
                     }
+
+                    // close database
+                    db.close();
+
                     Log.d(TAG, "Updater ran");
                     Thread.sleep(DELAY);
 
