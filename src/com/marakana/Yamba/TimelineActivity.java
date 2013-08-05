@@ -1,10 +1,16 @@
 package com.marakana.Yamba;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.format.DateUtils;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.SimpleCursorAdapter.ViewBinder;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,42 +19,70 @@ import android.widget.ListView;
  * Time: 11:11 AM
  * To change this template use File | Settings | File Templates.
  */
-public class TimelineActivity extends Activity {
+public class TimelineActivity extends BaseActivity {
 
-    DbHelper1 dbHelper1;
-    SQLiteDatabase db;
     Cursor cursor;
     ListView listTimeline;
-    TimelineAdapter adapter;
+    SimpleCursorAdapter adapter;
+    static final String[] FROM = { DbHelper.C_CREATED_AT, DbHelper.C_USER, DbHelper.C_TEXT };
+    static final int[] TO = { R.id.textCreatedAt, R.id.textUser, R.id.textText };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timeline);
 
-        listTimeline = (ListView) findViewById(R.id.listTimeline);
+        // Check if preferences have been set
+        if (yambaApplication.getPrefs().getString("username", null) == null) { // <2>
+            startActivity(new Intent(this, PrefsActivity.class));
+            Toast.makeText(this, R.string.msgSetupPrefs, Toast.LENGTH_LONG).show();
+        }
 
-        dbHelper1 = new DbHelper1(this);
-        db = dbHelper1.getReadableDatabase();
+        listTimeline = (ListView) findViewById(R.id.listTimeline);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
-        db.close();
+        yambaApplication.getStatusData().close();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        // Get the data from the database
-        cursor = db.query(DbHelper1.TABLE, null, null, null, null, null,
-                DbHelper1.C_CREATED_AT + " DESC");         // <6>
+        // Setup list
+        this.setupList();
+    }
 
-        // Create the adapter
-        adapter = new TimelineAdapter(this, cursor);  // <7>
+    // Responsible for fetching data and setting up the list and the adapter
+    private void setupList() {
+        // Get the data
+        cursor = yambaApplication.getStatusData().getStatusUpdates();
+        startManagingCursor(cursor);
+
+        // Setup Adapter
+        adapter = new SimpleCursorAdapter(this, R.layout.row, cursor, FROM, TO);
+        adapter.setViewBinder(VIEW_BINDER);
         listTimeline.setAdapter(adapter);
     }
+
+    // View binder constant to inject business logic for timestamp to relative
+    // time conversion
+    static final ViewBinder VIEW_BINDER = new ViewBinder() {
+
+        public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+            if (view.getId() != R.id.textCreatedAt)
+                return false;
+
+            // Update the created at text to relative time
+            long timestamp = cursor.getLong(columnIndex);
+            CharSequence relTime = DateUtils.getRelativeTimeSpanString(view
+                    .getContext(), timestamp);
+            ((TextView) view).setText(relTime);
+
+            return true;
+        }
+    };
 }

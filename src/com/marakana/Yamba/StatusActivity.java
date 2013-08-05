@@ -103,23 +103,6 @@ public class StatusActivity extends Activity implements OnClickListener, TextWat
         Log.d(TAG, "onCLicked");
     }
 
-    // When a options item is clicked
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.itemServiceStart:
-                startService(new Intent(this, UpdaterService.class));
-                break;
-            case R.id.itemServiceStop:
-                stopService(new Intent(this, UpdaterService.class));
-                break;
-            case R.id.itemPrefs:
-                startActivity(new Intent(this, PrefsActivity.class));
-                break;
-        }
-        return true;
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

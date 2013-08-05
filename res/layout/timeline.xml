@@ -9,7 +9,6 @@
               android:textColor="#fff" android:textSize="30sp" />
 
 
-    <!-- <1> -->
     <ListView android:layout_height="fill_parent"
               android:layout_width="fill_parent" android:id="@+id/listTimeline"
               android:background="#6000" />

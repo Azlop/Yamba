@@ -39,6 +39,10 @@ public class YambaApplication extends Application implements SharedPreferences.O
         return statusData;
     }
 
+    public SharedPreferences getPrefs(){
+        return prefs;
+    }
+
     @Override
     public synchronized void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         this.twitter = null;

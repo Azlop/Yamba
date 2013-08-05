@@ -13,7 +13,7 @@ import android.util.Log;
  * Time: 10:51 AM
  * To change this template use File | Settings | File Templates.
  */
-public class DbHelper1 extends SQLiteOpenHelper {
+public class DbHelper extends SQLiteOpenHelper {
 
     static final String TAG = "DbHelper";
     static final String DB_NAME = "timeline.db";
@@ -27,7 +27,7 @@ public class DbHelper1 extends SQLiteOpenHelper {
     Context context;
 
     // Constructor
-    public DbHelper1(Context context){
+    public DbHelper(Context context){
         super(context, DB_NAME, null, DB_VERSION);
         this.context = context;
     }
