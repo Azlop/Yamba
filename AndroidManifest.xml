@@ -5,8 +5,8 @@
       android:versionName="1.0">
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher"
             android:name=".YambaApplication">
-        <activity android:name=".TimelineActivity"
-                  android:label="@string/titleTimeline">
+        <activity android:name=".StatusActivity"
+                  android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -15,9 +15,6 @@
 
         <activity android:name=".PrefsActivity"
                   android:label="@string/titlePrefs" />
-
-        <activity android:name=".StatusActivity"
-                  android:label="@string/titleStatus" />
 
         <service android:name=".UpdaterService" />
     </application>

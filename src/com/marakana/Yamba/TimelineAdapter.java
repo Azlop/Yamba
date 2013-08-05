@@ -10,27 +10,26 @@ import android.widget.TextView;
 /**
  * Created with IntelliJ IDEA.
  * User: luis
- * Date: 8/3/13
- * Time: 12:22 PM
+ * Date: 8/5/13
+ * Time: 11:13 AM
  * To change this template use File | Settings | File Templates.
  */
 public class TimelineAdapter extends SimpleCursorAdapter {
 
-    static final String[] FROM = {DbHelper.C_CREATED_AT, DbHelper.C_USER, DbHelper.C_TEXT};
-    static final int[] TO = {R.id.textCreatedAt, R.id.textUser, R.id.textText};
+    static final String[] from = { DbHelper1.C_CREATED_AT, DbHelper1.C_USER, DbHelper1.C_TEXT };
+    static final int[] to = { R.id.textCreatedAt, R.id.textUser, R.id.textText };
 
-    public TimelineAdapter(Context context, Cursor c){
-        super(context, R.layout.row, c, FROM, TO);
+    public TimelineAdapter(Context context, Cursor cursor) {
+        super(context, R.layout.row, cursor, from, to);
     }
 
-    // This is where the actual binding of a cursor to view happens
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
-        super.bindView(view, context, cursor);
+    public void bindView(View row, Context context, Cursor cursor){
+        super.bindView(row, context, cursor);
 
-        // Manually bind created timestamp to its view
-        long timestamp = cursor.getLong(cursor.getColumnIndex(DbHelper.C_CREATED_AT));
-        TextView textCreatedAt = (TextView) view.findViewById(R.id.textCreatedAt);
+        long timestamp = cursor.getLong(cursor.getColumnIndex(DbHelper1.C_CREATED_AT));
+        TextView textCreatedAt = (TextView) row.findViewById(R.id.textCreatedAt);
         textCreatedAt.setText(DateUtils.getRelativeTimeSpanString(timestamp));
+
     }
 }

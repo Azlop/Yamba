@@ -10,12 +10,14 @@ import android.util.Log;
 /**
  * Created with IntelliJ IDEA.
  * User: luis
- * Date: 8/2/13
- * Time: 1:02 AM
+ * Date: 8/5/13
+ * Time: 10:59 AM
  * To change this template use File | Settings | File Templates.
  */
 public class StatusData {
+
     private static final String TAG = StatusData.class.getSimpleName();
+
     static final int VERSION = 1;
     static final String DATABASE = "timeline.db";
     static final String TABLE = "timeline";
@@ -25,35 +27,41 @@ public class StatusData {
     public static final String C_TEXT = "txt";
     public static final String C_USER = "user";
 
-    private static final String GET_ALL_ORDER_BY = C_CREATED_AT+"DESC";
-    private static final String[] MAX_CREATED_COLUMNS = { "max("+StatusData.C_CREATED_AT+")"};
+    private static final String GET_ALL_ORDER_BY = C_CREATED_AT + " DESC";
+
+    private static final String[] MAX_CREATED_AT_COLUMNS = { "max("
+            + StatusData.C_CREATED_AT + ")" };
+
     private static final String[] DB_TEXT_COLUMNS = { C_TEXT };
 
-    // DbHelper implementations
-    class DbHelper extends SQLiteOpenHelper {
+    class DBHelper extends SQLiteOpenHelper {
 
-        public DbHelper(Context context){
+        public DBHelper(Context context){
             super(context, DATABASE, null, VERSION);
         }
 
         @Override
-        public void onCreate(SQLiteDatabase db) {
-            Log.i(TAG, "Creating database "+DATABASE);
-            db.execSQL("create table "+TABLE+" ("+C_ID+" int primary key, "+
-                C_CREATED_AT+" int, "+C_USER+" text, "+C_TEXT+" text)");
+        public void onCreate(SQLiteDatabase sqLiteDatabase) {
+            String sql = "create table "+TABLE+" ("+C_ID+" int primary key, "
+                    +C_CREATED_AT+" int, "+C_USER+" text, "+C_TEXT+" text)";
+
+            sqLiteDatabase.execSQL(sql);
+
+            Log.d(TAG, "onCreated sql" + sql);
         }
 
         @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("drop table "+TABLE);
-            this.onCreate(db);
+        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
+            sqLiteDatabase.execSQL("drop table if exists "+TABLE);
+            Log.d(TAG, "onUpdated");
+            onCreate(sqLiteDatabase);
         }
     }
 
-    private final DbHelper dbHelper;
+    private final DBHelper dbHelper;
 
     public StatusData(Context context){
-        this.dbHelper = new DbHelper(context);
+        this.dbHelper = new DBHelper(context);
         Log.i(TAG, "Initialized data");
     }
 
@@ -62,28 +70,30 @@ public class StatusData {
     }
 
     public void insertOrIgnore(ContentValues values){
-        Log.d(TAG, "insertOrIgnore on "+values);
+        Log.d(TAG, "insertOrIgnore on " + values);
         SQLiteDatabase db = this.dbHelper.getWritableDatabase();
         try {
-            db.insertWithOnConflict(TABLE, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+            db.insertWithOnConflict(TABLE, null, values,
+                    SQLiteDatabase.CONFLICT_IGNORE);
         } finally {
             db.close();
         }
     }
 
     // return cursor where the columns are _id, created_at, user, text
-    public Cursor getStatusUpdates(){
+    public Cursor getStatusUpdates() {  // <9>
         SQLiteDatabase db = this.dbHelper.getReadableDatabase();
         return db.query(TABLE, null, null, null, null, null, GET_ALL_ORDER_BY);
     }
 
     // return timestamp of the latest status we have it the database
-    public long getLatestStatusCreatedAtTime(){
+    public long getLatestStatusCreatedAtTime() {  // <10>
         SQLiteDatabase db = this.dbHelper.getReadableDatabase();
         try {
-            Cursor cursor = db.query(TABLE, MAX_CREATED_COLUMNS, null, null, null, null, null);
+            Cursor cursor = db.query(TABLE, MAX_CREATED_AT_COLUMNS, null, null, null,
+                    null, null);
             try {
-                return cursor.moveToNext() ?  cursor.getLong(0) : Long.MIN_VALUE;
+                return cursor.moveToNext() ? cursor.getLong(0) : Long.MIN_VALUE;
             } finally {
                 cursor.close();
             }
@@ -92,11 +102,12 @@ public class StatusData {
         }
     }
 
-    // return text of status
-    public String getStatusTextById(long id){
+    // return text of the status
+    public String getStatusTextById(long id) {  // <11>
         SQLiteDatabase db = this.dbHelper.getReadableDatabase();
         try {
-            Cursor cursor = db.query(TABLE, DB_TEXT_COLUMNS, C_ID+"="+id, null, null, null, null);
+            Cursor cursor = db.query(TABLE, DB_TEXT_COLUMNS, C_ID + "=" + id, null,
+                    null, null, null);
             try {
                 return cursor.moveToNext() ? cursor.getString(0) : null;
             } finally {
