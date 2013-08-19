@@ -1,18 +1,14 @@
 package com.marakana.Yamba;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -22,6 +18,14 @@ import android.widget.Toast;
 import winterwell.jtwitter.Twitter;
 import winterwell.jtwitter.TwitterException;
 
+/**
+ * Created with IntelliJ IDEA.
+ * User: luis
+ * Date: 7/30/13
+ * Time: 12:16 PM
+ *
+ * Description:
+ */
 public class StatusActivity extends Activity implements OnClickListener, TextWatcher {
     private static final String TAG = "StatusActivity";
 

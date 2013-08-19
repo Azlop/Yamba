@@ -12,7 +12,8 @@ import android.util.Log;
  * User: luis
  * Date: 8/5/13
  * Time: 10:59 AM
- * To change this template use File | Settings | File Templates.
+ *
+ * Description:
  */
 public class StatusData {
 
@@ -81,13 +82,13 @@ public class StatusData {
     }
 
     // return cursor where the columns are _id, created_at, user, text
-    public Cursor getStatusUpdates() {  // <9>
+    public Cursor getStatusUpdates() {
         SQLiteDatabase db = this.dbHelper.getReadableDatabase();
         return db.query(TABLE, null, null, null, null, null, GET_ALL_ORDER_BY);
     }
 
     // return timestamp of the latest status we have it the database
-    public long getLatestStatusCreatedAtTime() {  // <10>
+    public long getLatestStatusCreatedAtTime() {
         SQLiteDatabase db = this.dbHelper.getReadableDatabase();
         try {
             Cursor cursor = db.query(TABLE, MAX_CREATED_AT_COLUMNS, null, null, null,
@@ -103,7 +104,7 @@ public class StatusData {
     }
 
     // return text of the status
-    public String getStatusTextById(long id) {  // <11>
+    public String getStatusTextById(long id) {
         SQLiteDatabase db = this.dbHelper.getReadableDatabase();
         try {
             Cursor cursor = db.query(TABLE, DB_TEXT_COLUMNS, C_ID + "=" + id, null,

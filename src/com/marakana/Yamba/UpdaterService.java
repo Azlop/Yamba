@@ -16,7 +16,8 @@ import java.util.List;
  * User: luis
  * Date: 7/30/13
  * Time: 12:16 PM
- * To change this template use File | Settings | File Templates.
+ *
+ * Description: Class that is responsible for periodically update the data from online service
  */
 public class UpdaterService extends Service {
     public static final String NEW_STATUS_INTENT = "com.marakana.yamba.NEW_STATUS";
@@ -66,6 +67,8 @@ public class UpdaterService extends Service {
 
     // Thread that performs the actual update from online service
     private class Updater extends Thread {
+        static final String RECEIVE_TIMELINE_NOTIFICATIONS = "com.marakana.Yamba.RECEIVE_TIMELINE_NOTIFICATIONS";
+        Intent intent;
 
         public Updater() {
             super("UpdaterService-Updater");
@@ -81,6 +84,9 @@ public class UpdaterService extends Service {
                     int newUpdates = yamba.fetchStatusUpdates();
                     if (newUpdates > 0) {
                         Log.d(TAG, "We have a new status");
+                        intent = new Intent(NEW_STATUS_INTENT);
+                        intent.putExtra(NEW_STATUS_EXTRA_COUNT, newUpdates);
+                        updaterService.sendBroadcast(intent, RECEIVE_TIMELINE_NOTIFICATIONS);
                     }
                     Thread.sleep(DELAY);
                 } catch (InterruptedException e) {
