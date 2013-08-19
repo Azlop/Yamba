@@ -27,7 +27,7 @@ import android.widget.SimpleCursorAdapter.ViewBinder;
 public class TimelineActivity extends BaseActivity {
 
     IntentFilter filter;
-    BroadcastReceiver receiver;
+    TimelineReceiver receiver;
     Cursor cursor;
     ListView listTimeline;
     SimpleCursorAdapter adapter;
