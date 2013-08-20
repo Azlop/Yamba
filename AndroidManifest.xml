@@ -38,7 +38,7 @@
                 <action android:name="android.appWidget.action.APPWDGET_UPDATE" />
             </intent-filter>
             <intent-filter>
-                <action android:name="com.marakana.Yamba.NEW_STATUS" />
+                <action android:name="com.marakana.android.Yamba.TIMELINE_UPDATED" />
             </intent-filter>
 
             <meta-data android:name="android.appWidget.provider"
@@ -65,4 +65,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="com.marakana.Yamba.SEND_TIMELINE_NOTIFICATIONS"/>
     <uses-permission android:name="com.marakana.Yamba.RECEIVE_TIMELINE_NOTIFICATIONS"/>
+
+    <uses-sdk android:minSdkVersion="5" />
 </manifest>

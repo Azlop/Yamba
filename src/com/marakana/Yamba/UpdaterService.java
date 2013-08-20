@@ -37,7 +37,7 @@ public class UpdaterService extends Service {
 
             Log.d(TAG, "onStarted");
         }
-        return START_STICKY;
+        return Service.START_STICKY;
     }
 
     @Override

@@ -59,7 +59,7 @@ public class StatusData {
         }
     }
 
-    public final DBHelper dbHelper;
+    final DBHelper dbHelper;
 
     public StatusData(Context context){
         this.dbHelper = new DBHelper(context);

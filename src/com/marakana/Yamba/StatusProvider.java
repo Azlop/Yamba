@@ -12,7 +12,8 @@ import android.net.Uri;
  * User: luis
  * Date: 8/19/13
  * Time: 12:10 PM
- * To change this template use File | Settings | File Templates.
+ *
+ * Description:
  */
 public class StatusProvider extends ContentProvider {
     static final String TAG = "StatusProvider";
@@ -42,7 +43,7 @@ public class StatusProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         statusData = new StatusData(getContext());
-        return true;
+        return false;
     }
 
     @Override

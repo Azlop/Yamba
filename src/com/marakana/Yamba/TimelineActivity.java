@@ -41,14 +41,15 @@ public class TimelineActivity extends BaseActivity {
         setContentView(R.layout.timeline);
 
         // Check if preferences have been set
-        if (yambaApplication.getPrefs().getString("username", null) == null) { // <2>
+        if (yambaApplication.getPrefs().getString("username", null) == null) {
             startActivity(new Intent(this, PrefsActivity.class));
             Toast.makeText(this, R.string.msgSetupPrefs, Toast.LENGTH_LONG).show();
         }
 
         listTimeline = (ListView) findViewById(R.id.listTimeline);
 
-        filter = new IntentFilter("com.marakana.yamba.NEW_STATUS");
+        filter = new IntentFilter("com.marakana.Yamba.NEW_STATUS");
+        receiver = new TimelineReceiver();
     }
 
     @Override
@@ -109,7 +110,8 @@ public class TimelineActivity extends BaseActivity {
     class TimelineReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            cursor.requery(); // refresh cursor
+            cursor = yambaApplication.getStatusData().getStatusUpdates();
+            adapter.changeCursor(cursor);
             adapter.notifyDataSetChanged();
             Log.d("TimelineReceiver", "onReceived");
         }

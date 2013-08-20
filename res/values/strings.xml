@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Yamba!</string>
     <string name="titleYamba">Yamba!</string>
+
     <string name="hintText">Please enter your 140-charater status</string>
     <string name="buttonUpdate">Update</string>
 
@@ -24,7 +25,7 @@
     <string name="msgPleaseWaitWhilePosting">Please wait while posting...</string>
     <string name="msgAllDataPurged">All data has been purged</string>
     <string name="msgSetupPrefs">Please enter your username, password and server to use</string>
-    <string name="msgLastTimelineUpdate">Last Timeline Update</string>
+    <string name="msgLastTimelineUpdate">Yamba Widget</string>
 
     <string name="send_timeline_notifications_permission_label">Send Timeline Notification Label</string>
     <string name="send_timeline_notifications_permission_description">Send Timeline Notification Description</string>
